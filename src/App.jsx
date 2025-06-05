@@ -6,7 +6,7 @@ import { useMouseMove, useValue, animate } from "react-ui-animate";
 function App() {
   const x = useValue(0);
   const y = useValue(0);
-  const CURSOR_SIZE = 10;
+  const CURSOR_SIZE = 20;
 
   useMouseMove(({ mouseX, mouseY }) => {
     x.value = mouseX - CURSOR_SIZE / 2;
@@ -60,71 +60,62 @@ export default App
 
 
 
-
-// import { useEffect, useState } from 'react'
-// import './App.css'
+// import { useEffect, useState } from 'react';
 // import axios from 'axios';
 // import InfiniteScroll from 'react-infinite-scroll-component';
 
 // function App() {
-
 //   const [product, setProduct] = useState([]);
-//   const [page, setPage] = useState(2);
+//   const [page, setPage] = useState(0);
 //   const pageLimit = 10;
 //   const [hasMore, setHasMore] = useState(true);
 
 //   useEffect(() => {
-//     const featchProduct = async () => {
-//       try {
-//         const res = await axios.get(`https://api.escuelajs.co/api/v1/products?offset=${1}&limit=${pageLimit}`)
-//         if (res && res.data) {
-//           setProduct(res.data);
-//         }
-//       } catch (error) {
-//         console.log(error)
-//       }
-//     }
-//     featchProduct()
-//   }, [])
+//     fetchProducts();
+//   }, []);
 
-
-//   const fetchMoreData = () => {
+//   const fetchProducts = async () => {
 //     try {
-//       const res = axios.get(`https://api.escuelajs.co/api/v1/products?offset=${page}&limit=${pageLimit}`)
-
-//       setProduct((prevItems) => [...prevItems, ...res.data]);
-
-//       res?.data.length > 0 ? setHasMore(true) : setHasMore(false);
-
-//       setPage((prev) => prev + 1);
-
+//       const res = await axios.get(`https://api.escuelajs.co/api/v1/products?offset=0&limit=${pageLimit}`);
+//       setProduct(res.data);
+//       setPage(pageLimit);
 //     } catch (error) {
-//       console.log(error)
+//       console.error('Error fetching initial products:', error);
 //     }
+//   };
 
+//   const fetchMoreData = async () => {
+//     try {
+//       const res = await axios.get(`https://api.escuelajs.co/api/v1/products?offset=${page}&limit=${pageLimit}`);
+//       const newData = res.data;
+
+//       setProduct((prevItems) => [...prevItems, ...newData]);
+//       setPage((prev) => prev + pageLimit);
+
+//       if (newData.length < pageLimit) {
+//         setHasMore(false);
+//       }
+//     } catch (error) {
+//       console.error('Error fetching more products:', error);
+//     }
 //   };
 
 //   return (
-//     <>
-//       <InfiniteScroll
-//         dataLength={product.length}
-//         next={fetchMoreData}
-//         hasMore={hasMore}
-//         loader={<div>Loading....</div>}
-//       >
-//         <div className='w-full h-[100vh] flex flex-col item-center gap-[1rem] text-black'>
-//           {product &&
-//             product?.map((item) => {
-//               return (
-//                 <div key={item?.id}>
-//                   <p>{item?.title}</p>
-//                 </div>
-//               )
-//             })}
-//         </div>
-//       </InfiniteScroll>
-//     </>
-//   )
+//     <InfiniteScroll
+//       dataLength={product.length}
+//       next={fetchMoreData}
+//       hasMore={hasMore}
+//       loader={<div className="text-center p-4">Loading...</div>}
+//       endMessage={<p className="text-center text-gray-500">No more products to load.</p>}
+//     >
+//       <div className="w-full min-h-screen flex flex-col items-center gap-4 text-black p-4">
+//         {product.map((item) => (
+//           <p>{item.title}</p>
+//         ))}
+//       </div>
+//     </InfiniteScroll>
+//   );
 // }
 
-// export default App
+// export default App;
+
