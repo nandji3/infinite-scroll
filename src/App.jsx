@@ -1,32 +1,51 @@
-/* eslint-disable no-unused-vars */
-import { useMouseMove, useValue, animate } from "react-ui-animate";
-
-
+import React, { useEffect, useRef } from 'react';
 
 function App() {
-  const x = useValue(0);
-  const y = useValue(0);
-  const CURSOR_SIZE = 20;
+  const cursorRef = useRef(null);
 
-  useMouseMove(({ mouseX, mouseY }) => {
-    x.value = mouseX - CURSOR_SIZE / 2;
-    y.value = mouseY - CURSOR_SIZE / 2;
-  });
+  useEffect(() => {
+    const cursor = cursorRef.current;
+
+    const moveCursor = (e) => {
+      const x = e.clientX;
+      const y = e.clientY;
+
+      if (cursor) {
+        cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      }
+    };
+
+    window.addEventListener('mousemove', moveCursor);
+
+    return () => {
+      window.removeEventListener('mousemove', moveCursor);
+    };
+  }, []);
 
   return (
-    <animate.div
-      style={{
-        width: CURSOR_SIZE,
-        height: CURSOR_SIZE,
-        backgroundColor: "teal",
-        borderRadius: "50%",
-        translateX: x.value,
-        translateY: y.value,
-      }}
-    />
+    <>
+      <div
+        ref={cursorRef}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '12px',
+          height: '12px',
+          backgroundColor: 'teal',
+          borderRadius: '50%',
+          pointerEvents: 'none',
+          zIndex: 9999,
+          transform: 'translate3d(0, 0, 0)',
+          transition: 'transform 0.01s linear',
+        }}
+      />
+    </>
   );
 }
-export default App
+
+export default App;
+
 
 
 
